@@ -4,7 +4,7 @@ import sqlite3
 conn = sqlite3.connect('database.db')
 
 # create table
-conn.execute('''CREATE TABLE users
+conn.execute('''CREATE TABLE Users
             (
             userID INTEGER PRIMARY KEY,
             password TEXT,
@@ -25,7 +25,7 @@ conn.execute('''CREATE TABLE contexts
                 contextID INTEGER PRIMARY KEY,
                 summary TEXT,
                 userID INTEGER,
-                FOREIGN KEY (userID) REFERENCES users(userID)
+                FOREIGN KEY (userID) REFERENCES Users(userID)
             )''')
 
 
