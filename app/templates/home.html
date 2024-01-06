@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+USE AN IMAGE WELCOMING USER
+
+
+{% if loggedIn %}
+
+SHOW LINKS TO SUMMARIZER AND QNA 
+
+{% else %}
+
+SHOW LINK TO REGISTER OR LOGIN PAGE
+
+{% endif %}
+
+{% endblock %}
