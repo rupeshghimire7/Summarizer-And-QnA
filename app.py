@@ -43,11 +43,11 @@ def home():
     loggedIn, userID, firstName = getLoginDetails()
     
     if loggedIn == True:
-        url1 = 'summarizer'
-        url2 = 'qna'
+        url1 = '/summarizer'
+        url2 = '/qna'
     else:
-        url1 = 'loginForm'
-        url2 = 'registrarionForm'
+        url1 = '/loginForm'
+        url2 = '/registrationForm'
 
     return render_template('home.html', loggedIn=loggedIn, url1=url1, url2=url2)
 
@@ -60,7 +60,7 @@ def home():
 @app.route("/loginForm")
 def loginForm():
     if 'email' in session:
-        return redirect(url_for('/'))
+        return redirect('/')
     else:
         return render_template('login.html', error='')
 
@@ -72,7 +72,7 @@ def login():
         password = request.form['password']
         if is_valid(email, password):
             session['email'] = email
-            return redirect(url_for('/'))
+            return redirect('/')
         else:
             error = 'Invalid UserID / Password'
             return render_template('login.html', error=error)
@@ -136,7 +136,7 @@ def registrationForm():
 @app.route("/account/profile")
 def profileHome():
     if 'email' not in session:
-        return redirect(url_for('/'))
+        return redirect('/')
     loggedIn, userID, firstName = getLoginDetails()
     with sqlite3.connect('database.db') as conn:
         cur = conn.cursor()
@@ -149,7 +149,7 @@ def profileHome():
 @app.route("/account/profile/edit")
 def editProfile():
     if 'email' not in session:
-        return redirect(url_for('/'))
+        return redirect('/')
     loggedIn, _, firstName = getLoginDetails()
     with sqlite3.connect('database.db') as conn:
         cur = conn.cursor()
@@ -158,6 +158,37 @@ def editProfile():
     conn.close()
     return render_template("editProfile.html", profileData=profileData, loggedIn=loggedIn, firstName=firstName)
 
+
+@app.route('/updateProfile', methods=['POST'])
+def updateProfile():
+    if 'email' not in session:
+        return redirect('/')
+    if request.method == 'POST':
+        loggedIn, userID, firstName = getLoginDetails()
+        email = request.form['email']
+        firstName = request.form['firstName']
+        lastName = request.form['lastName']
+        city = request.form['city']
+        state = request.form['state']
+        country = request.form['country']
+        phone = request.form['phone']
+        with sqlite3.connect('database.db') as conn:
+            try:
+                cur = conn.cursor()
+                cur.execute("UPDATE Users SET firstName=?, lastName=?, city=?, state=?, country=?, phone=? where email=?",(firstName, lastName, city, state, country, phone, email))
+                conn.commit()  
+                msg="Profile Updated Successfully."
+            except:
+                conn.rollback
+                msg="Couldn't update profile."
+                return render_template("editProfile.html",msg=msg)
+        
+        cur.execute("SELECT userId, email, firstName, lastName, city, state, country, phone FROM Users WHERE email = ?", (session['email'], ))
+        profileData = cur.fetchone()
+        conn.close()
+
+        return render_template('profileHome.html', profileData=profileData, msg=msg, loggedIn=loggedIn)
+            
 
 
 @app.route("/account/profile/changePassword", methods=["GET", "POST"])
@@ -189,9 +220,25 @@ def changePassword():
     else:
         return render_template("changePassword.html")
 
+
+
     
+# --------------------------------------------------------------------------------------------------
+# --------------------------------------  Summarizer -----------------------------------------------
+
+@app.route('/summarizer', methods=['GET', 'POST'])
+def summarizer():
+    pass
 
 
+
+
+# --------------------------------------------------------------------------------------------------
+# --------------------------------------  Summarizer -----------------------------------------------
+
+@app.route('/qna', methods=['GET', 'POST'])
+def qna():
+    pass
 
 
 

@@ -2,16 +2,19 @@
 
 {% block body %}
 
-USE AN IMAGE WELCOMING USER
+<div>USE AN IMAGE WELCOMING USER</div>
 
 
 {% if loggedIn %}
 
-SHOW LINKS TO SUMMARIZER AND QNA 
+<a href={{url1}}>Summarizer</a><br>
+<a href={{url2}}>QnA</a>
+
 
 {% else %}
 
-SHOW LINK TO REGISTER OR LOGIN PAGE
+<a href={{url1}}>Login</a><br>
+<a href={{url2}}>Register</a>
 
 {% endif %}
 
