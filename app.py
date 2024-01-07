@@ -43,11 +43,11 @@ def home():
     loggedIn, userID, firstName = getLoginDetails()
     
     if loggedIn == True:
-        url1 = '/summarizer'
-        url2 = '/qna'
+        url1 = 'summarizer'
+        url2 = 'qna'
     else:
-        url1 = '/loginForm'
-        url2 = '/registrarionForm'
+        url1 = 'loginForm'
+        url2 = 'registrarionForm'
 
     return render_template('home.html', loggedIn=loggedIn, url1=url1, url2=url2)
 
@@ -112,7 +112,7 @@ def register():
         with sqlite3.connect('database.db') as con:
             try:
                 cur = con.cursor()
-                cur.execute('INSERT INTO users (password, email, firstName, lastName, city, state, country, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (hashlib.md5(password.encode()).hexdigest(), email, firstName, lastName, city, state, country, phone))
+                cur.execute('INSERT INTO Users (password, email, firstName, lastName, city, state, country, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (hashlib.md5(password.encode()).hexdigest(), email, firstName, lastName, city, state, country, phone))
 
                 con.commit()
 
@@ -130,8 +130,64 @@ def registrationForm():
 
 
 
+# --------------------------------------------------------------------------------------------------
+# --------------------------------------  Profile, Updates and Change Password ----------------------
+
+@app.route("/account/profile")
+def profileHome():
+    if 'email' not in session:
+        return redirect(url_for('/'))
+    loggedIn, userID, firstName = getLoginDetails()
+    with sqlite3.connect('database.db') as conn:
+        cur = conn.cursor()
+        cur.execute("SELECT userId, email, firstName, lastName, city, state, country, phone FROM Users WHERE email = ?", (session['email'], ))
+        profileData = cur.fetchone()
+    return render_template("profileHome.html", profileData=profileData, loggedIn=loggedIn, userID=userID, firstName=firstName)
 
 
+
+@app.route("/account/profile/edit")
+def editProfile():
+    if 'email' not in session:
+        return redirect(url_for('/'))
+    loggedIn, _, firstName = getLoginDetails()
+    with sqlite3.connect('database.db') as conn:
+        cur = conn.cursor()
+        cur.execute("SELECT userId, email, firstName, lastName, city, state, country, phone FROM Users WHERE email = ?", (session['email'], ))
+        profileData = cur.fetchone()
+    conn.close()
+    return render_template("editProfile.html", profileData=profileData, loggedIn=loggedIn, firstName=firstName)
+
+
+
+@app.route("/account/profile/changePassword", methods=["GET", "POST"])
+def changePassword():
+    if 'email' not in session:
+        return redirect(url_for('loginForm'))
+    if request.method == "POST":
+        oldPassword = request.form['oldpassword']
+        oldPassword = hashlib.md5(oldPassword.encode()).hexdigest()
+        newPassword = request.form['newpassword']
+        newPassword = hashlib.md5(newPassword.encode()).hexdigest()
+        with sqlite3.connect('database.db') as conn:
+            cur = conn.cursor()
+            cur.execute("SELECT userId, password FROM Users WHERE email = ?", (session['email'], ))
+            userId, password = cur.fetchone()
+            if (password == oldPassword):
+                try:
+                    cur.execute("UPDATE Users SET password = ? WHERE userId = ?", (newPassword, userId))
+                    conn.commit()
+                    msg="Changed successfully"
+                except:
+                    conn.rollback()
+                    msg = "Failed"
+                return render_template("changePassword.html", msg=msg)
+            else:
+                msg = "Wrong password"
+        conn.close()
+        return render_template("changePassword.html", msg=msg)
+    else:
+        return render_template("changePassword.html")
 
     
 

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Profile Home</title>
+{% endblock %}
+
+{% block body %}
+<div>
+	{% if not loggedIn %}
+	<div id="signInButton">
+		<a class="link" href="/loginForm">Sign In</a>
+	</div>
+	{% else %}
+	<div class="dropdown">
+		<button class="dropbtn">Hello, <br>{{firstName}}</button>
+		<div class="dropdown-content">
+			<hr>
+			<a href="/logout">Sign Out</a>
+		</div>
+	</div>
+	{% endif %}	
+</div>
+
+<div>
+    <p>Email:{{profileData[1]}}</p>
+    <p>First Name:{{profileData[2]}}</p>
+    <p>Last Name:{{profileData[3]}}</p>
+    <p>City:{{profileData[4]}} </p>
+    <p>State:{{profileData[5]}} </p>
+    <p>Country: {{profileData[6]}}</p>
+    <p>Phone Number:{{profileData[7]}}</p>
+</div>
+
+<div>
+	<a href="/account/profile/edit">Edit Profile</a><br>
+	<a href="/account/profile/changePassword">Change password</a>
+</div>
+{% endblock %}
