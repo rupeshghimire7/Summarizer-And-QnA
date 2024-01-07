@@ -14,7 +14,8 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 ## ------------------------------------------------------------------------------------
-###  ---------------------------------------ROUTES------------------------------------
+###  ---------------------------------------ALL ROUTES------------------------------------
+## ------------------------------------------------------------------------------------
 
 def getLoginDetails():
     with sqlite3.connect('database.db') as conn:
@@ -31,6 +32,37 @@ def getLoginDetails():
     return (loggedIn, userID, firstName)
 
 
+
+
+# --------------------------------------------------------------------------------------------------
+# -------------------------------------- HOME PAGE --------------------------------------------------
+
+## Load Home page and Lead user if logged in, to summarizer and qna page else, to login or register page
+@app.route('/')
+def home():
+    loggedIn, userID, firstName = getLoginDetails()
+    
+    if loggedIn == True:
+        url1 = '/summarizer'
+        url2 = '/qna'
+    else:
+        url1 = '/loginForm'
+        url2 = '/registrarionForm'
+
+    return render_template('home.html', loggedIn=loggedIn, url1=url1, url2=url2)
+
+
+
+
+# --------------------------------------------------------------------------------------------------
+# -------------------------------------- USER LOGIN  -----------------------------------------------
+
+@app.route("/loginForm")
+def loginForm():
+    if 'email' in session:
+        return redirect(url_for('/'))
+    else:
+        return render_template('login.html', error='')
 
 
 @app.route("/login", methods = ['POST', 'GET'])
@@ -57,11 +89,49 @@ def is_valid(email, password):
     return False
 
 
-@app.route('/')
-def home():
-    loggedIn, userID, firstName = getLoginDetails()
 
-    return render_template('home.html', loggedIn=loggedIn, userID=userID, firstName=firstName)
+
+# --------------------------------------------------------------------------------------------------
+# -------------------------------------- USER REGISTRATION -----------------------------------------
+
+
+
+@app.route("/register", methods = ['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        #Parse form data    
+        password = request.form['password']
+        email = request.form['email']
+        firstName = request.form['firstName']
+        lastName = request.form['lastName']
+        city = request.form['city']
+        state = request.form['state']
+        country = request.form['country']
+        phone = request.form['phone']
+
+        with sqlite3.connect('database.db') as con:
+            try:
+                cur = con.cursor()
+                cur.execute('INSERT INTO users (password, email, firstName, lastName, city, state, country, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (hashlib.md5(password.encode()).hexdigest(), email, firstName, lastName, city, state, country, phone))
+
+                con.commit()
+
+                msg = "Registered Successfully"
+            except:
+                con.rollback()
+                msg = "Error occured"
+        con.close()
+        return render_template("login.html", error=msg)
+
+@app.route("/registrationForm")
+def registrationForm():
+    return render_template("register.html")
+
+
+
+
+
+
 
     
 
