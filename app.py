@@ -167,7 +167,7 @@ def updateProfile():
     if 'email' not in session:
         return redirect('/')
     if request.method == 'POST':
-        loggedIn, userID, firstName = getLoginDetails()
+        loggedIn, _, _ = getLoginDetails()
         email = request.form['email']
         firstName = request.form['firstName']
         lastName = request.form['lastName']
@@ -253,8 +253,6 @@ def summarizer():
         context = request.form['context']
         summary = inference_model_summarize(context)
 
-        
-        
         with sqlite3.connect('database.db') as conn:
             try:
                 cur = conn.cursor()
@@ -263,18 +261,11 @@ def summarizer():
             except:
                 conn.rollback()
 
-            conn.close()
+        conn.close()
         return render_template('summarize.html', context=context, summary=summary)
     
     else:
-        with sqlite3.connect('database.db') as conn:
-            cur = conn.cursor()
-
-            cur.execute("SELECT context, summary FROM contexts WHERE userID=?",(userID))
-            context_old, summary_old = cur.fetchall()
-            conn.close()
-            length = [ i for i in range(len(context_old))]
-        return render_template('summarize.html', context_old=context_old, summary_old=summary_old, length=length,summary=None)
+        return render_template('summarize.html')
 
 
 
