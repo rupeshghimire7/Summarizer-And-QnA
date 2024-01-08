@@ -298,7 +298,50 @@ def qnaForm():
 
 @app.route('/qna', methods=['GET', 'POST'])
 def qna():
-    pass
+    loggedIn, userID, _ = getLoginDetails()
+    if not loggedIn:
+        return url_for('home')
+
+    if request.method == "POST":
+
+        context = request.form['context']
+        question = request.form['question']
+
+        answer = inference_model_qna(question, context)
+
+        with sqlite3.connect('database.db') as conn:
+            try:
+                cur = conn.cursor()
+                # Add context to database
+                cur.execute("INSERT INTO contexts (context, userID) VALUES (?, ?)",(context,userID))
+                conn.commit()
+
+                # Get context id
+                cur.execute("SELECT contextID FROM contexts WHERE context=?",(context))
+                contextID = cur.fetchone()
+
+                # add question to database
+                cur.execute("INSERT INTO questions (text, contextID) VALUES (?, ?)",(question,contextID))
+                conn.commit()
+
+                # Get question id
+                cur.execute("SELECT questionID FROM contexts WHERE text=?",(question))
+                questionID = cur.fetchone()
+
+                # add answer to database
+                cur.execute("INSERT INTO answers (text, questionID) VALUES (?, ?)",(answer,questionID))
+                conn.commit()
+
+            except:
+                conn.rollback()
+
+            conn.close()
+        return render_template('qna.html', context=context, question=question, answer=answer)
+    
+    else:
+        return render_template('qna.html')
+
+
 
 
 
