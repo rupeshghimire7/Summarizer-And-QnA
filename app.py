@@ -252,6 +252,7 @@ def summarizer():
 
         context = request.form['context']
         summary = inference_model_summarize(context)
+        summary = summary[0]
 
         with sqlite3.connect('database.db') as conn:
             try:
@@ -316,7 +317,7 @@ def qna():
             except:
                 conn.rollback()
 
-            conn.close()
+        conn.close()
         return render_template('qna.html', context=context, question=question, answer=answer)
     
     else:

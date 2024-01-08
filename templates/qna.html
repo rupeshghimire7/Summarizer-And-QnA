@@ -1,1 +1,36 @@
 {% extends 'base.html' %}
+
+{% block head %}
+<title>QnA</title>
+{% endblock %}
+
+
+
+
+{% block body %}
+
+{% if answer %}
+<h1>Your Provided Text:</h1>
+{{context}}
+{% else %}
+<h1>Enter Your Text:</h1>
+{% endif %}
+
+<form action="/qna" method='POST'>
+  <textarea name='context'></textarea>
+  <label>Enter Question:</label>
+  <p><input type='text' name='question'/></p>
+  <br>
+  <input type="submit" value="Submit">
+</form>
+
+{% if answer %}
+
+<label>Question:</label>
+<p>{{question}}</p>
+<label>ANSWER:</label>
+<p>{{summary}}</p>
+{% endif %}
+
+
+{% endblock %}
