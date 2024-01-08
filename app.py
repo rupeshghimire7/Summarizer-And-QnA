@@ -2,6 +2,9 @@ from flask import *
 import sqlite3, hashlib, os
 from werkzeug.utils import secure_filename
 
+from ML_models.qna import inference_model_qna
+from ML_models.summarizer import inference_model_summarize
+
 app = Flask(__name__)
 app.secret_key = 'random string'
 UPLOAD_FOLDER = 'app/static/uploads'
@@ -43,8 +46,8 @@ def home():
     loggedIn, userID, firstName = getLoginDetails()
     
     if loggedIn == True:
-        url1 = '/summarizer'
-        url2 = '/qna'
+        url1 = '/summarizerForm'
+        url2 = '/qnaForm'
     else:
         url1 = '/loginForm'
         url2 = '/registrationForm'
@@ -109,18 +112,18 @@ def register():
         country = request.form['country']
         phone = request.form['phone']
 
-        with sqlite3.connect('database.db') as con:
+        with sqlite3.connect('database.db') as conn:
             try:
-                cur = con.cursor()
+                cur = conn.cursor()
                 cur.execute('INSERT INTO Users (password, email, firstName, lastName, city, state, country, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (hashlib.md5(password.encode()).hexdigest(), email, firstName, lastName, city, state, country, phone))
 
-                con.commit()
+                conn.commit()
 
                 msg = "Registered Successfully"
             except:
-                con.rollback()
+                conn.rollback()
                 msg = "Error occured"
-        con.close()
+        conn.close()
         return render_template("login.html", error=msg)
 
 @app.route("/registrationForm")
@@ -234,15 +237,64 @@ def logout():
 # --------------------------------------------------------------------------------------------------
 # --------------------------------------  Summarizer -----------------------------------------------
 
+@app.route("/summarizerForm")
+def summarizerForm():
+    return render_template("summarize.html")
+
+
 @app.route('/summarizer', methods=['GET', 'POST'])
 def summarizer():
-    pass
+    loggedIn, userID, _ = getLoginDetails()
+    if not loggedIn:
+        return url_for('home')
+    
+    if request.method == "POST":
+
+        context = request.form['context']
+        summary = inference_model_summarize(context)
+
+        
+        
+        with sqlite3.connect('database.db') as conn:
+            try:
+                cur = conn.cursor()
+                cur.execute('INSERT INTO contexts (context, summary, userID) VALUES (?,?,?)', (context, summary, userID))
+                conn.commit()
+            except:
+                conn.rollback()
+
+            conn.close()
+        return render_template('summarize.html', context=context, summary=summary)
+    
+    else:
+        with sqlite3.connect('database.db') as conn:
+            cur = conn.cursor()
+
+            cur.execute("SELECT context, summary FROM contexts WHERE userID=?",(userID))
+            context_old, summary_old = cur.fetchall()
+            conn.close()
+            length = [ i for i in range(len(context_old))]
+        return render_template('summarize.html', context_old=context_old, summary_old=summary_old, length=length,summary=None)
+
+
+
+
+
+
+
+
+    
+
 
 
 
 
 # --------------------------------------------------------------------------------------------------
-# --------------------------------------  Summarizer -----------------------------------------------
+# --------------------------------------  QnA ------------------------------------------------------
+
+@app.route("/qnaForm")
+def qnaForm():
+    return render_template("qna.html")
 
 @app.route('/qna', methods=['GET', 'POST'])
 def qna():
