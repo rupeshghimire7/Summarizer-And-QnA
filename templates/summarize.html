@@ -10,33 +10,22 @@
 {% block body %}
 
 {% if summary %}
-<h1>Your Provided Text:</h1>
-{{context}}
+      <h1>Your Provided Text:</h1>
+      {{context}}
+
+      <label>Summary:</label>
+      <p>{{summary}}</p>
+
 {% else %}
-<h1>Enter Your Text:</h1>
-{% endif %}
+      <h1>Enter Your Text:</h1>
 
-<form action="/summarizer" method='POST'>
-  <textarea name='context'>
-  </textarea>
-  <br>
-  <input type="submit" value="Submit">
-</form>
+      <form action="/summarizer" method='POST'>
+        <textarea name='context'>
+        </textarea>
+        <br>
+        <input type="submit" value="Summarize">
+      </form>
 
-{% if summary %}
-<label>Summary:</label>
-<p>{{summary}}</p>
-{% endif %}
-
-<br>
-<hr>
-<br>
-
-{% if summary_old %}
-{% for l in length %}
-<b>Context:</b> <p>context_old[{{l}}]</p>
-<b>Summary:</b> <p>summary_old[{{l}}]</p>
-{% endfor %}
 {% endif %}
 
 {% endblock %}

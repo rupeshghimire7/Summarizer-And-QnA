@@ -16,20 +16,23 @@
 <h1>Enter Your Text:</h1>
 {% endif %}
 
-<form action="/qna" method='POST'>
-  <textarea name='context'></textarea>
-  <label>Enter Question:</label>
-  <p><input type='text' name='question'/></p>
-  <br>
-  <input type="submit" value="Submit">
-</form>
-
 {% if answer %}
 
 <label>Question:</label>
 <p>{{question}}</p>
 <label>ANSWER:</label>
-<p>{{summary}}</p>
+<p>{{answer}}</p>
+
+{% else %}
+
+<form action="/qna" method='POST'>
+  <textarea name='context'></textarea>
+  <label>Enter Question:</label>
+  <p><input type='text' name='question'/></p>
+  <br>
+  <input type="submit" value="Get Answer">
+</form>
+
 {% endif %}
 
 

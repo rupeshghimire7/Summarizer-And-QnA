@@ -252,7 +252,7 @@ def summarizer():
 
         context = request.form['context']
         summary = inference_model_summarize(context)
-        summary = summary[0]
+        summary = summary[0]['summary_text']
 
         with sqlite3.connect('database.db') as conn:
             try:
@@ -290,6 +290,7 @@ def qna():
         question = request.form['question']
 
         answer = inference_model_qna(question, context)
+        answer = answer['answer']
 
         with sqlite3.connect('database.db') as conn:
             try:
