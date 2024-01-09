@@ -323,6 +323,36 @@ def qna():
     
     else:
         return render_template('qna.html')
+    
+
+# --------------------------------------------------------------------------------------------------
+# --------------------------------------  About Page ----------------------------------------------
+@app.route('/about', methods=["GET"])
+def about():
+    loggedIn,_,_ = getLoginDetails()
+    if loggedIn == True:
+        url1 = '/summarizerForm'
+        url2 = '/qnaForm'
+    else:
+        url1 = '/loginForm'
+        url2 = '/registrationForm'
+    return render_template('about.html', url1=url1, url2=url2)
+
+
+
+# --------------------------------------------------------------------------------------------------
+# --------------------------------------  Contact Page ----------------------------------------------
+@app.route('/contact', methods=["GET"])
+def contact():
+    loggedIn,_,_ = getLoginDetails()
+    if loggedIn == True:
+        url1 = '/summarizerForm'
+        url2 = '/qnaForm'
+    else:
+        url1 = '/loginForm'
+        url2 = '/registrationForm'
+    return render_template('contact.html', url1=url1, url2=url2)
+
 
 
 
