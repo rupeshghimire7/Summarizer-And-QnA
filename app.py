@@ -139,7 +139,7 @@ def registrationForm():
 @app.route("/account/profile")
 def profileHome():
     if 'email' not in session:
-        return redirect('/')
+        return redirect('/loginForm')
     loggedIn, userID, firstName = getLoginDetails()
     with sqlite3.connect('database.db') as conn:
         cur = conn.cursor()

@@ -6,35 +6,216 @@
 {% endblock %}
 
 {% block body %}
-<div>
-
-
-	{% if not loggedIn %}
-	<div>
-		<a class="link" href="/loginForm">Sign In</a>
-	</div>
-	{% else %}
-	<div>
-		<button>Hello, <br>{{firstName}}</button>
-		<div>
-			<a href="/account/profile">Your profile</a>
-			<hr>
-			<a href="/logout">Sign Out</a>
-		</div>
-	</div>
-	{% endif %}
 
 {{msg}}
-<div class="display">
-	<h2>Edit profile</h2>
-	<form action="/updateProfile" method="POST">
-		<p>Email:<input type="email" name="email" value={{profileData[1]}} readonly="readonly"></p>
-		<p>First Name:<input type="text" name="firstName" value={{profileData[2]}}></p>
-		<p>Last Name: <input type="text" name="lastName" value={{profileData[3]}}></p>
-		<p>City: <input type="text" name="city" value={{profileData[4]}}></p>
-		<p>State: <input type="text" name="state" value={{profileData[5]}}></p>
-		<p>Country: <input type="text" name="country" value={{profileData[6]}}></p>
-		<p>Phone Number: <input type="text" name="phone" value={{profileData[7]}}></p>
-		<input type="submit" value="Save">
-	</form>
+
+
+
+
+<section class="py-16 bg-gray-100 dark:bg-gray-800">
+	<div class="max-w-6xl px-4 mx-auto">
+	  <div
+		class="p-6 bg-white border border-gray-100 rounded-lg shadow dark:bg-gray-900 dark:border-gray-900"
+	  >
+  
+  {% if not loggedIn %}
+  <div class="flex pt-6 flex-wrap -m-1.5">
+	  <div class="w-full md:w-auto p-1.5">
+		  <a href="/loginForm"
+			  class="flex flex-wrap justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-blue-500 rounded-md hover:bg-blue-600">
+			  <p>Sign In</p>
+		  </a>
+	  </div>
+  </div>
+  
+  {% else %}
+  
+		<div class="pb-6 border-b border-gray-100 dark:border-gray-700">
+		  <h2
+			class="text-xl font-bold text-gray-800 md:text-3xl dark:text-gray-300"
+		  >
+			User Profile
+		  </h2>
+		  <p class="text-xs font-medium text-gray-500">
+			Your details:
+		  </p>
+		</div>
+  
+		<form action="/updateProfile" method="POST">
+
+			<div class="py-6 border-b border-gray-100 dark:border-gray-800">
+				<div class="w-full ">
+				  <div class="flex flex-wrap -m-3">
+					<div class="w-full p-3 ">
+					  <p
+						class="text-base font-semibold text-gray-700 dark:text-gray-400"
+					  >
+					  <div class="py-6 border-b border-gray-100 dark:border-gray-800">
+						<div class="w-full ">
+						  <div class="flex flex-wrap -m-3">
+							<div class="w-full p-3 ">
+							  <p
+								class="text-base font-semibold text-gray-700 dark:text-gray-400"
+							  >
+								Email Address:
+					  </p>
+					</div>
+					<div class="w-full p-3 md:flex-1">
+						<input type="email" name="email" value="{{profileData[1]}}" placeholder="your email" class="w-3/5 dark:bg-gray-800 dark:border-gray-800 px-4 dark:placeholder-gray-500 dark:text-gray-400 py-2.5 text-base text-gray-900 rounded-lg font-normal border border-gray-200"/>
+							
+					</div>
+				  </div>
+				</div>
+			  </div>
+
+
+		<div class="py-6 border-b border-gray-100 dark:border-gray-800">
+			<div class="w-full ">
+			  <div class="flex flex-wrap -m-3">
+				<div class="w-full p-3 ">
+				  <p
+					class="text-base font-semibold text-gray-700 dark:text-gray-400"
+				  >
+					Name
+				  </p>
+				</div>
+				<div class="w-full p-3 ">
+				  <input type="text" value="{{profileData[2]}}" name="firstName" placeholder="First Name" class="w-3/5 dark:bg-gray-800 dark:border-gray-800 px-4 dark:placeholder-gray-500 dark:text-gray-400 py-2.5 text-base text-gray-900 rounded-lg font-normal border border-gray-200">
+				  
+				</div>
+				<div class="w-full p-3 ">
+				  <input type="text" name="lastName" value="{{profileData[3]}}" placeholder="Last Name" class="w-3/5 dark:bg-gray-800 dark:border-gray-800 px-4 dark:placeholder-gray-500 dark:text-gray-400 py-2.5 text-base text-gray-900 rounded-lg font-normal border border-gray-200"/>
+				</div>
+			  </div>
+			</div>
+		  </div>
+  
+		<div class="py-6 border-b border-gray-100 dark:border-gray-800">
+		  <div class="w-full ">
+			<div class="flex flex-wrap -m-3">
+			  <div class="w-full p-3 ">
+				<p
+				  class="text-base font-semibold text-gray-700 dark:text-gray-400"
+				>
+				<div class="py-6 border-b border-gray-100 dark:border-gray-800">
+				  <div class="w-full ">
+					<div class="flex flex-wrap -m-3">
+					  <div class="w-full p-3 ">
+						<p
+						  class="text-base font-semibold text-gray-700 dark:text-gray-400"
+						>
+						  City
+				</p>
+			  </div>
+			  <div class="w-full p-3 md:flex-1">
+				  <input type="text" name="city" placeholder="City" value="{{profileData[4]}}" class="w-3/5 dark:bg-gray-800 dark:border-gray-800 px-4 dark:placeholder-gray-500 dark:text-gray-400 py-2.5 text-base text-gray-900 rounded-lg font-normal border border-gray-200"/>
+			  </div>
+			</div>
+		  </div>
+		</div>
+  
+		<div class="py-6 border-b border-gray-100 dark:border-gray-800">
+		  <div class="w-full ">
+			<div class="flex flex-wrap -m-3">
+			  <div class="w-full p-3 ">
+				<p
+				  class="text-base font-semibold text-gray-700 dark:text-gray-400"
+				>
+				<div class="py-6 border-b border-gray-100 dark:border-gray-800">
+				  <div class="w-full ">
+					<div class="flex flex-wrap -m-3">
+					  <div class="w-full p-3 ">
+						<p
+						  class="text-base font-semibold text-gray-700 dark:text-gray-400"
+						>
+						  State
+				</p>
+			  </div>
+			  <div class="w-full p-3 md:flex-1">
+				  <input type="text" name="state" placeholder="State" value="{{profileData[5]}}" class="w-3/5 dark:bg-gray-800 dark:border-gray-800 px-4 dark:placeholder-gray-500 dark:text-gray-400 py-2.5 text-base text-gray-900 rounded-lg font-normal border border-gray-200"/>
+			  </div>
+			</div>
+		  </div>
+		</div>
+  
+		<div class="py-6 border-b border-gray-100 dark:border-gray-800">
+		  <div class="w-full ">
+			<div class="flex flex-wrap -m-3">
+			  <div class="w-full p-3 ">
+				<p
+				  class="text-base font-semibold text-gray-700 dark:text-gray-400"
+				>
+				<div class="py-6 border-b border-gray-100 dark:border-gray-800">
+				  <div class="w-full ">
+					<div class="flex flex-wrap -m-3">
+					  <div class="w-full p-3 ">
+						<p
+						  class="text-base font-semibold text-gray-700 dark:text-gray-400"
+						>
+						  Country
+				</p>
+			  </div>
+			  <div class="w-full p-3 md:flex-1">
+				  <input type="text" name="country" value="{{profileData[6]}}" placeholder="Country" class="w-3/5 dark:bg-gray-800 dark:border-gray-800 px-4 dark:placeholder-gray-500 dark:text-gray-400 py-2.5 text-base text-gray-900 rounded-lg font-normal border border-gray-200"/>
+			  </div>
+			</div>
+		  </div>
+		</div>
+  
+		<div class="py-6 border-b border-gray-100 dark:border-gray-800">
+		  <div class="w-full ">
+			<div class="flex flex-wrap -m-3">
+			  <div class="w-full p-3 ">
+				<p
+				  class="text-base font-semibold text-gray-700 dark:text-gray-400"
+				>
+				<div class="py-6 border-b border-gray-100 dark:border-gray-800">
+				  <div class="w-full ">
+					<div class="flex flex-wrap -m-3">
+					  <div class="w-full p-3 ">
+						<p
+						  class="text-base font-semibold text-gray-700 dark:text-gray-400"
+						>
+						  Phone Number
+				</p>
+			  </div>
+			  <div class="w-full p-3 md:flex-1">
+				  <input type="text" name="phone" value="{{profileData[7]}}" placeholder="Phone Number" class="w-3/5 dark:bg-gray-800 dark:border-gray-800 px-4 dark:placeholder-gray-500 dark:text-gray-400 py-2.5 text-base text-gray-900 rounded-lg font-normal border border-gray-200"/>
+					  
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  
+		<div class="flex pt-6 flex-wrap -m-1.5">
+			<div class="w-full md:w-auto p-1.5">
+				<input type="sumbit" value="Save Changes"
+					class="flex flex-wrap justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-blue-500 rounded-md hover:bg-blue-600"/>
+			</div>
+		  <div class="w-full md:w-auto p-1.5">
+			  <a href="/account/profile"
+				  class="flex flex-wrap justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-blue-500 rounded-md hover:bg-blue-600">
+				  <p>Back to Profile</p>
+			  </a>
+		  </div>
+		  <div class="w-full md:w-auto p-1.5">
+			  <a href="/account/profile/changePassword"
+				  class="flex flex-wrap justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-blue-500 rounded-md hover:bg-blue-600 ">
+				  <p>Change Password</p>
+			  </a>
+		  </div>
+		  <div class="w-full md:w-auto p-1.5">
+			  <a href="/logout"
+				  class="flex flex-wrap justify-center w-full px-4 py-2 text-sm font-medium text-white bg-red-500 border border-red-500 rounded-md hover:bg-red-600 ">
+				  <p>Sign Out</p>
+			  </a>
+		  </div>
+		 </div>
+		{% endif %}
+		</form>
+		
+	  </div>
+	</div>
+  </section>
+
 {% endblock %}
