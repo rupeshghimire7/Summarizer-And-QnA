@@ -1,15 +1,72 @@
-{% extends 'base.html' %}
-
-{% block head %}
+{% extends 'base.html' %} {% block head %}
 <title>Login Page</title>
-{% endblock %}
+{% endblock %} 
 
-{% block body %}
-<p> {{error}} </p>
-<form action="/login" method="POST">
-	<p>Email: <input type="text" name="email"></p>
-	<p>Password: <input type="password" name="password"></p>
-	<p><input type="submit"></p>
-	<a href="/registrationForm">Register here</a>
-</form>
+{% block body %} 
+
+{{error}}
+
+<section class="font-poppins mx-auto">
+  <div class="max-w-6xl px-0 mx-auto lg:px-6">
+    <div class="flex flex-col items-center mx-auto h-full md:flex-row">
+      <div
+        class="flex items-center justify-center h-screen max-w-full px-0 lg:max-w-full lg:px-16 xl:px-12"
+      >
+        <div
+          class="z-10 w-full p-10 bg-gray-100 border-2 border-gray-200 dark:bg-gray-900 h-100"
+        >
+          <h2
+            class="text-xl font-bold leading-tight mb-7 md:text-3xl dark:text-gray-300"
+          >
+            Login to your account
+          </h2>
+          <form action="/login" method="POST" class="mt-6">
+            <div>
+              <label for="" class="block text-gray-700 dark:text-gray-300"
+                >Email:</label
+              >
+              <input
+                type="email"
+                class="w-full px-4 py-3 mt-2 bg-white rounded-lg dark:text-gray-100 dark:bg-gray-800 dark:border dark:border-gray-800"
+                name="email"
+                placeholder="Enter your email"
+              />
+            </div>
+            <div class="mt-5">
+              <div>
+                <label for="" class="text-gray-700 dark:text-gray-300"
+                  >Password:</label
+                >
+                <div class="relative flex items-center mt-2">
+                  <input
+                    type="password"
+                    class="w-full px-4 py-3 bg-white rounded-lg dark:text-gray-400 dark:bg-gray-800 dark:border dark:border-gray-800"
+                    name="password"
+                    placeholder="Enter your password"
+                  />
+                </div>
+              </div>
+            </div>
+            <button
+              class="w-full px-4 py-3 mt-6 font-semibold text-gray-200 bg-blue-600 rounded-lg hover:text-gray-700 hover:bg-blue-200"
+              type="submit"
+            >
+              LOGIN
+            </button>
+            <p class="mt-6 text-gray-700 dark:text-gray-300">
+              Don't have an account?
+              <a
+                href="/registrationForm"
+                class="font-semibold text-blue-500 hover:text-blue-700"
+              >
+                Create an account
+              </a>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 {% endblock %}
