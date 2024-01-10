@@ -2,8 +2,8 @@
 <title>Summarizer</title>
 {% endblock %} {% block body %} 
 
-<div class="pt-16">
 {% if summary %}
+<section class="pt-16 bg-gray-900">
 <div
   class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600"
 >
@@ -43,24 +43,26 @@
     </div>
   </div>
 </div>
+</section>
 
 {% else %}
-
+<section class="pt-16 bg-gray-900">
 <form action="/summarizer" method="POST">
   <div
     class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600"
   >
-    <div class="px-4 py-2 bg-white rounded-b-lg dark:bg-gray-800">
+      <h1 class="text-5xl font-bold dark:text-white">
+        <span class="text-blue-500"> Enter Your Text </span>
+      </h1>
       <label for="editor" class="sr-only">Summarizer</label>
       <textarea
         id="editor"
         name="context"
-        rows="15"
+        rows="10"
         class="block w-full px-0 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
         placeholder="Enter your text..."
         required
       ></textarea>
-    </div>
   </div>
   <button
     type="submit"
@@ -69,6 +71,9 @@
     Summarize
   </button>
 </form>
-</div>
+</section>
+{% endif %}
 
-{% endif %} {% endblock %}
+
+ {% endblock %}
+

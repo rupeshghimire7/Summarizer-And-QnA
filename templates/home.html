@@ -10,11 +10,11 @@
 
 {% block body %}
 
-<section class="pb-8 overflow-hidden " style="height: 750px">
+<section class="pb-8 overflow-hidden">
   <div>
     <img
       src="{{logo}}static/image/library.jpg"
-      class="absolute top-0 bottom-0 left-0 right-0 object-cover w-full h-full"
+      class="absolute top-0 bottom-0 left-0 right-0 object-cover w-full h-full overflow-hidden"
       alt=""
     />
 
@@ -40,7 +40,7 @@
 
         <div class="items-center justify-start block gap-4 md:flex">
           <a
-            class="block px-5 py-3 mb-4 text-sm font-semibold text-center text-gray-100 transition duration-200 bg-blue-600 rounded md:mb-0 md:inline-block hover:bg-blue-700"
+            class="block px-5 py-3 text-1xl font-semibold text-center text-blue-700 transition duration-200 bg-white rounded md:inline-block hover:bg-blue-700 hover:text-gray-100"
             {%
             if
             loggedIn
@@ -51,7 +51,7 @@
           </a>
 
           <a
-            class="block px-5 py-3 text-sm font-semibold text-center text-blue-700 transition duration-200 bg-white rounded md:inline-block hover:bg-blue-700 hover:text-gray-100"
+            class="block px-5 py-3 text-1xl font-semibold text-center text-blue-700 transition duration-200 bg-white rounded md:inline-block hover:bg-blue-700 hover:text-gray-100"
             {%
             if
             loggedIn

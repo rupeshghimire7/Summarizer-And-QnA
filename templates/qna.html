@@ -2,38 +2,116 @@
 
 {% block head %}
 <title>QnA</title>
-{% endblock %}
-
-
-
+{% endblock %} 
 
 {% block body %}
 
-{% if answer %}
-<h1>Your Provided Text:</h1>
-{{context}}
+ {% if answer %}
+
+<section class="pt-16 h-screen bg-gray-900">
+  <div
+    class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600"
+  >
+    <h1 class="text-5xl font-bold dark:text-white">
+      <span class="text-blue-500"> Your Text </span>
+    </h1>
+    <div class="px-4 py-2 bg-white rounded-b-lg dark:bg-gray-800">
+      <label for="editor" class="sr-only">Your text:</label>
+      <div
+        rows="10"
+        name="context"
+        class="block w-full px-0 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+        placeholder="Enter your text..."
+        required
+      >
+        {{context}}
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600"
+  >
+    <h1 class="text-3xl font-bold dark:text-white">
+      <span class="text-blue-500"> Question</span>
+    </h1>
+    <div class="px-4 py-2 bg-white rounded-b-lg dark:bg-gray-800">
+      <label for="editor" class="sr-only">Question:</label>
+      <div
+        rows="3"
+        name="context"
+        class="block w-full px-0 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+        placeholder="Enter your text..."
+        required
+      >
+        {{question}}
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600"
+  >
+    <h1 class="text-3xl font-bold dark:text-white">
+      <span class="text-blue-500"> Answer</span>
+    </h1>
+    <div class="px-4 py-2 bg-white rounded-b-lg dark:bg-gray-800">
+      <label for="editor" class="sr-only">Answer:</label>
+      <div
+        rows="3"
+        name="context"
+        class="block w-full px-0 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+        placeholder="Enter your text..."
+        required
+      >
+        {{answer}}
+      </div>
+    </div>
+  </div>
+</section>
+
 {% else %}
-<h1>Enter Your Text:</h1>
-{% endif %}
-
-{% if answer %}
-
-<label>Question:</label>
-<p>{{question}}</p>
-<label>ANSWER:</label>
-<p>{{answer}}</p>
-
-{% else %}
-
-<form action="/qna" method='POST'>
-  <textarea name='context'></textarea>
-  <label>Enter Question:</label>
-  <p><input type='text' name='question'/></p>
-  <br>
-  <input type="submit" value="Get Answer">
+<section class="pt-16 h-screen bg-gray-900">
+  <form action="/summarizer" method="POST">
+    <div
+      class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600"
+    >
+      <h1 class="text-5xl font-bold dark:text-white">
+        <span class="text-blue-500"> Enter Your Text </span>
+      </h1>
+      <label for="editor" class="sr-only">QnA</label>
+      <textarea
+        id="editor"
+        name="context"
+        rows="10"
+        class="block w-full px-0 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+        placeholder="Enter your text..."
+        required=""
+      ></textarea>
+    </div>
+  <div
+    class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600"
+  >
+    <h1 class="text-2xl font-bold dark:text-white">
+      <span class="text-blue-500"> Enter Question </span>
+    </h1>
+    <label for="editor" class="sr-only">QnA</label>
+    <textarea
+      id="editor"
+      name="question"
+      rows="2"
+      class="block w-full px-0 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+      placeholder="Enter Your Question...?"
+      required=""
+    ></textarea>
+  </div>
+  <button
+    type="submit"
+    class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"
+  >
+    Get Answer
+  </button>
 </form>
+</section>
 
-{% endif %}
-
-
-{% endblock %}
+{% endif %} {% endblock %}
