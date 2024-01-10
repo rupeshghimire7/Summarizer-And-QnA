@@ -124,7 +124,7 @@ def register():
                 conn.rollback()
                 msg = "Error occured"
         conn.close()
-        return render_template("login.html", error=msg)
+        return render_template("login.html", msg=msg)
 
 @app.route("/registrationForm")
 def registrationForm():
@@ -180,7 +180,7 @@ def updateProfile():
                 cur = conn.cursor()
                 cur.execute("UPDATE Users SET firstName=?, lastName=?, city=?, state=?, country=?, phone=? where email=?",(firstName, lastName, city, state, country, phone, email))
                 conn.commit()  
-                msg="Profile Updated Successfully."
+                msg="Changed successfully"
             except:
                 conn.rollback
                 msg="Couldn't update profile."
@@ -198,6 +198,7 @@ def updateProfile():
 def changePassword():
     if 'email' not in session:
         return redirect(url_for('loginForm'))
+    loggedIn,_, firstName = getLoginDetails()
     if request.method == "POST":
         oldPassword = request.form['oldpassword']
         oldPassword = hashlib.md5(oldPassword.encode()).hexdigest()
@@ -212,6 +213,7 @@ def changePassword():
                     cur.execute("UPDATE Users SET password = ? WHERE userId = ?", (newPassword, userId))
                     conn.commit()
                     msg="Changed successfully"
+                    return redirect('/')
                 except:
                     conn.rollback()
                     msg = "Failed"
@@ -219,9 +221,10 @@ def changePassword():
             else:
                 msg = "Wrong password"
         conn.close()
-        return render_template("changePassword.html", msg=msg)
+
+        return render_template("changePassword.html", msg=msg, loggedIn=loggedIn, firstName=firstName )
     else:
-        return render_template("changePassword.html")
+        return render_template("changePassword.html", loggedIn=loggedIn, firstName=firstName)
 
 
 
