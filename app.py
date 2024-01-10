@@ -125,7 +125,9 @@ def register():
                 conn.rollback()
                 msg = "Error occured"
         conn.close()
-        return render_template("login.html", msg=msg)
+        return redirect('/')
+    
+    
 
 @app.route("/registrationForm")
 def registrationForm():
