@@ -111,7 +111,8 @@ def register():
         state = request.form['state']
         country = request.form['country']
         phone = request.form['phone']
-
+        if len(password) < 8:
+            return render_template('register.html', msg="Password Length Should Be Minimum 8 Characters.")
         with sqlite3.connect('database.db') as conn:
             try:
                 cur = conn.cursor()
@@ -145,7 +146,7 @@ def profileHome():
         cur = conn.cursor()
         cur.execute("SELECT userId, email, firstName, lastName, city, state, country, phone FROM Users WHERE email = ?", (session['email'], ))
         profileData = cur.fetchone()
-    return render_template("profileHome.html", profileData=profileData, loggedIn=loggedIn, userID=userID, firstName=firstName)
+    return render_template("profileHome.html", profileData=profileData, loggedIn=loggedIn, userID=userID, firstName=firstName,logo="../")
 
 
 
@@ -159,7 +160,7 @@ def editProfile():
         cur.execute("SELECT userId, email, firstName, lastName, city, state, country, phone FROM Users WHERE email = ?", (session['email'], ))
         profileData = cur.fetchone()
     conn.close()
-    return render_template("editProfile.html", profileData=profileData, loggedIn=loggedIn, firstName=firstName)
+    return render_template("editProfile.html", profileData=profileData, loggedIn=loggedIn, firstName=firstName, logo="../../")
 
 
 @app.route('/updateProfile', methods=['POST'])
@@ -190,7 +191,7 @@ def updateProfile():
         profileData = cur.fetchone()
         conn.close()
 
-        return render_template('profileHome.html', profileData=profileData, msg=msg, loggedIn=loggedIn)
+        return render_template('profileHome.html', profileData=profileData, msg=msg, loggedIn=loggedIn,logo="../../")
             
 
 
@@ -203,6 +204,8 @@ def changePassword():
         oldPassword = request.form['oldpassword']
         oldPassword = hashlib.md5(oldPassword.encode()).hexdigest()
         newPassword = request.form['newpassword']
+        if len(newPassword) < 8:
+            return render_template('changePassword.html', msg="Password Length Should Be Minimum 8 Characters.")
         newPassword = hashlib.md5(newPassword.encode()).hexdigest()
         with sqlite3.connect('database.db') as conn:
             cur = conn.cursor()
@@ -217,14 +220,14 @@ def changePassword():
                 except:
                     conn.rollback()
                     msg = "Failed"
-                return render_template("changePassword.html", msg=msg)
+                return render_template("changePassword.html", msg=msg,logo="../../")
             else:
                 msg = "Wrong password"
         conn.close()
 
-        return render_template("changePassword.html", msg=msg, loggedIn=loggedIn, firstName=firstName )
+        return render_template("changePassword.html", msg=msg, loggedIn=loggedIn, firstName=firstName,logo="../../" )
     else:
-        return render_template("changePassword.html", loggedIn=loggedIn, firstName=firstName)
+        return render_template("changePassword.html", loggedIn=loggedIn, firstName=firstName,logo="../../")
 
 
 
