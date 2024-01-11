@@ -1,6 +1,5 @@
 from flask import *
-import sqlite3, hashlib, os
-from werkzeug.utils import secure_filename
+import sqlite3, hashlib
 
 from ML_models.qna import inference_model_qna
 from ML_models.summarizer import inference_model_summarize
