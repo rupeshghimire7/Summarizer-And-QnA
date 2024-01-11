@@ -109,45 +109,33 @@ Welcome to the Summarization and QnA Flask App! This application leverages the p
 ## Getting Started
 
 ### 1. Clone the repository:
-    ```
+    
     git clone git@github.com:rupeshghimire7/Summarizer-And-QnA.git
     cd your-Summarizer-And-QnA
-    ```
+    
 
 
 
 ### 2. Create Python Virtual Environment
 
-      ```
       python3 -m venv your-env-name
-      ```
-  
-    
-      ```
       source your-env-name/bin/activate
-      ```
+      
 
 
 ### 3. Install dependencies:
 
-    ```
     pip install -r requirements.txt
-    ```
 
 
 ### 4. Create Database:
 
-
-    ```
     python3 database.py
-    ```
 
 
 ### 5. Run the Flask app:
 
-    ```
     python3 app.py
-    ```
 
 
 ### 6. Access the app
